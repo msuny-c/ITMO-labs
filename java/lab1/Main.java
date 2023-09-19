@@ -23,7 +23,7 @@ public class Main {
                    case 14 -> firstFunction(x[j]);
                    case 3, 5, 8, 10, 12, 13, 15, 19 -> secondFunction(x[j]);
                    default -> thirdFunction(x[j]);
-               }
+               };
            }
        }
        // Вывод результирующего массива
