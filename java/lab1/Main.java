@@ -2,13 +2,13 @@ import static java.lang.Math.*;
 
 public class Main {
    public static void main(String[] args) {
-       // Создание массива c из чисел от 19 до 3
+       // Создание массива c
        int from = 3, to = 19;
        int[] c = new int[to - from + 1];
        for (int i = to; i >= from; i--) {
            c[to - i] = i;
        }
-       // Создание массива x из случайных чисел
+       // Создание массива x
        double[] x = new double[16];
        double minX = -7.0, maxX = 9.0;
        for (int i = 0; i < x.length; i++) {
