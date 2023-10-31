@@ -1,0 +1,62 @@
+@startuml
+
+top to bottom direction
+skinparam linetype ortho
+
+class Charm
+class DazzlingGleam
+class DoubleTeam
+class HydroPump
+class Psychic
+class ShadowBall
+class Roost
+class Scald
+class Hypnosis
+class Thunder
+class WingAttack
+
+class Move
+class PhysicalMove
+class SpecialMove
+class StatusMove
+
+class Pokemon
+class Mesprit
+class Wingull
+class Pelipper
+class Ralts
+class Kirlia
+class Gardevoir
+
+class App
+
+WingAttack    -[#000082,plain]-^  PhysicalMove
+
+DazzlingGleam -[#000082,plain]-^  SpecialMove
+HydroPump     -[#000082,plain]-^  SpecialMove
+Psychic       -[#000082,plain]-^  SpecialMove
+ShadowBall    -[#000082,plain]-^  SpecialMove
+Scald         -[#000082,plain]-^  SpecialMove
+Thunder       -[#000082,plain]-^  SpecialMove
+
+Charm         -[#000082,plain]-^  StatusMove
+DoubleTeam    -[#000082,plain]-^  StatusMove
+Hypnosis      -[#000082,plain]-^  StatusMove
+Roost         -[#000082,plain]-^  StatusMove
+
+StatusMove    -[#000082,plain]-^  Move
+DamageMove    -[#000082,plain]-^  Move
+PhysicalMove  -[#000082,plain]-^  DamageMove
+SpecialMove   -[#000082,plain]-^  DamageMove
+
+Mesprit       -[#000082,plain]-^  Pokemon
+
+Wingull       -[#000082,plain]-^  Pokemon
+Pelipper      -[#000082,plain]-^  Wingull
+
+Ralts         -[#000082,plain]-^  Pokemon
+Kirlia        -[#000082,plain]-^  Ralts
+Gardevoir     -[#000082,plain]-^  Kirlia
+
+
+@enduml
