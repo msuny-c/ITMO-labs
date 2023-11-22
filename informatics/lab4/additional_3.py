@@ -114,12 +114,7 @@ def parse_blocks(block, c_i, lines, flags):
     if has_key(lines[c_i]):
         key = parse_key(lines[c_i])
         value = parse_value(lines[c_i])
-        if is_string(value):
-            string_type = value.split()[0]
-            result = parse_blocks({}, c_i + 1, lines, string_type)
-            block.update({key: parse_blocks({}, c_i + 1, lines, string_type)})
-            return block
-        elif c_i + 1 < len(lines) and not (isinstance(value, str) and value.split()) and spaces(
+        if c_i + 1 < len(lines) and not (isinstance(value, str) and value.split()) and spaces(
                 lines[c_i + 1]) > spaces(lines[c_i]):
             result = parse_blocks({}, c_i + 1, lines, None)
             block.update({key: result[0]})
