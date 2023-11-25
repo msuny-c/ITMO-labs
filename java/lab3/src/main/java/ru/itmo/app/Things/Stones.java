@@ -1,6 +1,6 @@
-package Things;
-import Interfaces.Climbable;
-import Persons.Entity;
+package ru.itmo.app.Things;
+import ru.itmo.app.Interfaces.Climbable;
+import ru.itmo.app.Persons.Entity;
 public class Stones extends Thing implements Climbable {
     public Stones(String name) {
         super(name);

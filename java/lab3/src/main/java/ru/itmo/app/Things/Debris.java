@@ -1,4 +1,4 @@
-package Things;
+package ru.itmo.app.Things;
 public class Debris extends Thing {
     public Debris(String name) {
         super(name);

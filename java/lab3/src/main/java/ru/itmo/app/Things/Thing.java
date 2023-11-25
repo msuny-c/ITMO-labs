@@ -1,17 +1,12 @@
-package Things;
-import Common.Essence;
-import Places.Place;
+package ru.itmo.app.Things;
+import ru.itmo.app.Common.Essence;
+import ru.itmo.app.Interfaces.IJump;
+import ru.itmo.app.Interfaces.ILocated;
+import ru.itmo.app.Places.Place;
 import java.util.Objects;
-public abstract class Thing extends Essence {
-    private Place location;
+public abstract class Thing extends Essence implements ILocated {
     protected Thing(String name) {
         super(name);
-    }
-    public void setLocation(Place place) {
-        this.location = place;
-    }
-    public void getLocation() {
-        System.out.println(this.location.getName());
     }
 
     @Override
@@ -19,13 +14,13 @@ public abstract class Thing extends Essence {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Thing thing = (Thing) obj;
-        return getName().equals(thing.getName()) && this.location == thing.location;
+        return getName().equals(thing.getName()) && this.getLocation() == thing.getLocation();
     }
     @Override
     public String toString() {
-        if (location != null) {
+        if (getLocation() != null) {
             return getClass() + "{" + "name=" + getName() +
-                    ", location=" + location.getName() + "}";
+                    ", location=" + getLocation().getName() + "}";
         } else {
             return getClass() + "{" + "name=" + getName() +
                     ", location=null}";}
