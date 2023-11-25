@@ -1,5 +1,8 @@
-package Places;
-public class Building extends OpenPlace {
+package ru.itmo.app.Places;
+
+import ru.itmo.app.Interfaces.ILocated;
+
+public class Building extends Place {
     public Building(String name)
     {
         super(name);

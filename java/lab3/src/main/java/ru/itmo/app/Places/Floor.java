@@ -1,10 +1,14 @@
-package Places;
-import Things.*;
+package ru.itmo.app.Places;
+import ru.itmo.app.Interfaces.ILocated;
+import ru.itmo.app.Things.*;
 import java.util.ArrayList;
-public class Floor extends SinglePlace {
+public class Floor extends Place implements ILocated {
     ArrayList<Thing> things = new ArrayList<>();
     public Floor(String name) {
         super(name);
+    }
+    public void describeLocation() {
+        System.out.println(getName() + " находится в: " + getLocation().getName());
     }
     public void saved(String direction) {
         System.out.println(getName() + " " + direction + " сохранился");

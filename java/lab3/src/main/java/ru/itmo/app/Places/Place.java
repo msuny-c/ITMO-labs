@@ -1,6 +1,5 @@
-package Places;
-import Common.Essence;
-
+package ru.itmo.app.Places;
+import ru.itmo.app.Common.Essence;
 import java.util.Objects;
 
 public abstract class Place extends Essence {

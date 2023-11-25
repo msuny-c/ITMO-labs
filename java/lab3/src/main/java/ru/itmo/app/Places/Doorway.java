@@ -1,5 +1,8 @@
-package Places;
-public class Doorway extends SinglePlace {
+package ru.itmo.app.Places;
+
+import ru.itmo.app.Interfaces.ILocated;
+
+public class Doorway extends Place implements ILocated {
     private String width;
     private String length;
     public Doorway(String name) {
