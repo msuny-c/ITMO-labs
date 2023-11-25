@@ -1,7 +1,9 @@
-import Places.*;
-import Persons.*;
-import Things.*;
-import Common.Directions;
+package ru.itmo.app;
+import ru.itmo.app.Places.*;
+import ru.itmo.app.Persons.*;
+import ru.itmo.app.Things.*;
+import ru.itmo.app.Interfaces.*;
+import ru.itmo.app.Common.Directions;
 public class Main {
     public static void main(String[] args) {
         Narrator narrator = new Narrator();
@@ -42,6 +44,6 @@ public class Main {
         floor.addThings(slippers);
         narrator.jump(floor);
         floor.getThings();
-        floor.getLocation();
+        floor.describeLocation();
     }
 }
