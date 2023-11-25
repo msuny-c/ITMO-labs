@@ -1,5 +1,5 @@
-package Interfaces;
-import Places.SinglePlace;
+package ru.itmo.app.Interfaces;
+import ru.itmo.app.Places.Place;
 public interface IJump {
-    void jump(SinglePlace place);
+    void jump(Place place);
 }
