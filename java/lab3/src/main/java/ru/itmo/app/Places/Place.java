@@ -19,8 +19,7 @@ public abstract class Place extends Essence {
         return getClass().getName() + "{name=" + getName() + "}";
     }
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return Objects.hash(getName());
     }
 }
