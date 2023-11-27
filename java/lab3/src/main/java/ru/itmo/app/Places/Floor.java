@@ -8,7 +8,9 @@ public class Floor extends Place implements ILocated {
     public Floor(String name) {
         super(name);
     }
-    
+    public void describeLocation() {
+        System.out.println(getName() + " находится в: " + getLocation().getName());
+    }
     public void saved(String direction) {
         System.out.println(getName() + " " + direction + " сохранился");
     }
