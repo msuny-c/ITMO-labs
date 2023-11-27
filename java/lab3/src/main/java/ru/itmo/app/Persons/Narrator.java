@@ -5,6 +5,7 @@ public class Narrator extends Entity implements IFind, IClimb, IGo, IJump, IDoub
     public Narrator() {
         super("мы");
     }
+    
     public void go(Place place) {
         setLocation(place);
         System.out.println(getName() + " вошли в " + place.getName());
