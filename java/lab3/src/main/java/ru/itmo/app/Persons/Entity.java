@@ -1,6 +1,5 @@
 package ru.itmo.app.Persons;
 import ru.itmo.app.Interfaces.ILocated;
-import ru.itmo.app.Places.Place;
 import ru.itmo.app.Common.Essence;
 
 import java.util.Objects;
