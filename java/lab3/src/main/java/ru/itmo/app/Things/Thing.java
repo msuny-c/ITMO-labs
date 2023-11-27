@@ -1,8 +1,6 @@
 package ru.itmo.app.Things;
 import ru.itmo.app.Common.Essence;
-import ru.itmo.app.Interfaces.IJump;
 import ru.itmo.app.Interfaces.ILocated;
-import ru.itmo.app.Places.Place;
 import java.util.Objects;
 public abstract class Thing extends Essence implements ILocated {
     protected Thing(String name) {
