@@ -8,13 +8,11 @@ public abstract class Place extends Essence {
     }
 
     @Override
-    public boolean equals(Object otherObject)
-    {
-        if (this == otherObject) return true;
-        if (otherObject == null) return false;
-        if (!this.getClass().equals(otherObject.getClass())) return false;
-        Place other = (Place) otherObject;
-        return Objects.equals(getName(), other.getName());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Place place = (Place) o;
+        return Objects.equals(getName(), place.getName());
     }
     @Override
     public int hashCode()
@@ -23,6 +21,6 @@ public abstract class Place extends Essence {
     }
     @Override
     public String toString() {
-        return getClass() + "{" + "name=" + getName() + "}";
+        return getClass().getName() + "{" + "name=" + getName() + "}";
     }
 }
