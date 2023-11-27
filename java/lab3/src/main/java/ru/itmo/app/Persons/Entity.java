@@ -11,20 +11,15 @@ public abstract class Entity extends Essence implements ILocated {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Entity entity = (Entity) obj;
-        return getName().equals(entity.getName()) && getLocation() == entity.getLocation();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Entity entity = (Entity) o;
+        return Objects.equals(getName(), entity.getName());
     }
     @Override
     public String toString() {
-        if (getLocation() != null) {
-            return getClass() + "{" + "name=" + getName() +
-                    ", location=" + getLocation().getName() + "}";
-        } else {
-            return getClass() + "{" + "name=" + getName() +
-                    ", location=null}";}
+        return getName();
     }
     @Override
     public int hashCode() {
