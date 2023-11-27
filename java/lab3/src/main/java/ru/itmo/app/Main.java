@@ -16,7 +16,7 @@ public class Main {
         doorway.setLength(10);
 
         narrator.find(doorway.describe());
-        doorway.getLocation();
+        doorway.describeLocation();
 
         Lobby lobby = new Lobby("вестибюль с барельефными портретами по стенам");
         Floor floor = new Floor("пол");
@@ -45,6 +45,6 @@ public class Main {
         narrator.jump(floor);
 
         floor.getThings();
-        floor.getLocation();
+        floor.describeLocation();
     }
 }
