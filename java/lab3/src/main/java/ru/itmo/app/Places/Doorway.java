@@ -8,6 +8,9 @@ public class Doorway extends Place implements ILocated {
     public Doorway(String name) {
         super(name);
     }
+    public void describeLocation() {
+        System.out.println(getName() + " находится в: " + getLocation().getName());
+    }
     public void setWidth(int width) {
         this.width = width;
     }
