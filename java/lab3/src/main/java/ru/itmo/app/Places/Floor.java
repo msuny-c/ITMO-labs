@@ -3,7 +3,7 @@ import ru.itmo.app.Interfaces.ILocated;
 import ru.itmo.app.Things.*;
 import java.util.ArrayList;
 public class Floor extends Place implements ILocated {
-    ArrayList<Thing> things = new ArrayList<>();
+    private final ArrayList<Thing> things = new ArrayList<>();
     
     public Floor(String name) {
         super(name);
