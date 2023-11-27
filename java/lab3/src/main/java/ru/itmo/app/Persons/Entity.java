@@ -19,7 +19,7 @@ public abstract class Entity extends Essence implements ILocated {
     }
     @Override
     public String toString() {
-        return getName();
+        return getClass().getName() + "{name=" + getName() + "}";
     }
     @Override
     public int hashCode() {
