@@ -13,9 +13,10 @@ public interface ILocated {
             location.put(object, place);
         }
     }
-    default void setLocation(Place place) { Location.setLocation(this, place); }
+    default void setLocation(Place place) { 
+        Location.setLocation(this, place); 
+    }
     default Place getLocation() {
         return Location.getLocation(this);
     }
-
 }
