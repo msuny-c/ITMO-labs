@@ -16,7 +16,8 @@ public interface ILocated {
     default void setLocation(Place place) { 
         Location.setLocation(this, place); 
     }
-    default Place getLocation() {
-        return Location.getLocation(this);
+    default void getLocation() {
+        System.out.println(getName() + " находится в: " + Location.getLocation(this).getName());
     }
+    String getName();
 }
