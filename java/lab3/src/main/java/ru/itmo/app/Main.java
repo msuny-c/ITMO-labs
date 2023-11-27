@@ -8,16 +8,15 @@ public class Main {
         Narrator narrator = new Narrator();
 
         Building firstBuilding = new Building("строение");
-        Doorway firstDoorway = new Doorway("арочный проем");
-        firstDoorway.setLocation(firstBuilding);
-
+        Doorway doorway = new Doorway("арочный проем");
         Wall wall = new Wall("стена");
-        firstDoorway.setLocation(wall);
-        firstDoorway.setWidth("шесть");
-        firstDoorway.setLength("десять футов");
 
-        narrator.find(firstDoorway.describe());
-        firstDoorway.getLocation();
+        doorway.setLocation(wall);
+        doorway.setWidth("шесть");
+        doorway.setLength("десять футов");
+
+        narrator.find(doorway.describe());
+        doorway.getLocation();
 
         Lobby lobby = new Lobby("вестибюль с барельефными портретами по стенам");
         Floor floor = new Floor("пол");
@@ -32,6 +31,7 @@ public class Main {
         Building house = new Building("дом");
         Debris debris = new Debris("гора обломков");
         debris.makeEasier("вход в дом");
+
         narrator.doubt();
         narrator.notScared("влиться в эту стародавнюю мистерию");
         narrator.go(house);
@@ -41,8 +41,10 @@ public class Main {
 
         Slippers slippers = new Slippers("сланцы");
         floor.addThings(slippers);
+
         narrator.jump(floor);
+
         floor.getThings();
-        floor.describeLocation();
+        floor.getLocation();
     }
 }
