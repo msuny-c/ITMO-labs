@@ -10,23 +10,19 @@ public abstract class Thing extends Essence implements ILocated {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Thing thing = (Thing) obj;
-        return getName().equals(thing.getName()) && this.getLocation() == thing.getLocation();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Place place = (Place) o;
+        return Objects.equals(getName(), place.getName());
     }
     @Override
     public String toString() {
-        if (getLocation() != null) {
-            return getClass() + "{" + "name=" + getName() +
-                    ", location=" + getLocation().getName() + "}";
-        } else {
-            return getClass() + "{" + "name=" + getName() +
-                    ", location=null}";}
+        return getClass().getName() + "{name=" + getName() + "}";
     }
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(getName());
     }
 }
