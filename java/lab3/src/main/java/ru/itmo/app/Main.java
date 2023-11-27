@@ -2,7 +2,6 @@ package ru.itmo.app;
 import ru.itmo.app.Places.*;
 import ru.itmo.app.Persons.*;
 import ru.itmo.app.Things.*;
-import ru.itmo.app.Interfaces.*;
 import ru.itmo.app.Common.Directions;
 public class Main {
     public static void main(String[] args) {
