@@ -4,9 +4,11 @@ import ru.itmo.app.Things.*;
 import java.util.ArrayList;
 public class Floor extends Place implements ILocated {
     ArrayList<Thing> things = new ArrayList<>();
+    
     public Floor(String name) {
         super(name);
     }
+    
     public void saved(String direction) {
         System.out.println(getName() + " " + direction + " сохранился");
     }
