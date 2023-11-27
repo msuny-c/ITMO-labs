@@ -13,8 +13,8 @@ public abstract class Thing extends Essence implements ILocated {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Place place = (Place) o;
-        return Objects.equals(getName(), place.getName());
+        Thing thing = (Thing) o;
+        return Objects.equals(getName(), thing.getName());
     }
     @Override
     public String toString() {
