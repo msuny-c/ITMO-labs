@@ -12,8 +12,8 @@ public class Main {
         Wall wall = new Wall("стена");
 
         doorway.setLocation(wall);
-        doorway.setWidth("шесть");
-        doorway.setLength("десять футов");
+        doorway.setWidth(6);
+        doorway.setLength(10);
 
         narrator.find(doorway.describe());
         doorway.getLocation();
