@@ -15,12 +15,12 @@ public abstract class Place extends Essence {
         return Objects.equals(getName(), place.getName());
     }
     @Override
+    public String toString() {
+        return getClass().getName() + "{name=" + getName() + "}";
+    }
+    @Override
     public int hashCode()
     {
         return Objects.hash(getName());
-    }
-    @Override
-    public String toString() {
-        return getClass().getName() + "{" + "name=" + getName() + "}";
     }
 }
