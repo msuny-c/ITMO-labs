@@ -3,18 +3,18 @@ package ru.itmo.app.Places;
 import ru.itmo.app.Interfaces.ILocated;
 
 public class Doorway extends Place implements ILocated {
-    private String width;
-    private String length;
+    private int width;
+    private int length;
     public Doorway(String name) {
         super(name);
     }
-    public void setWidth(String width) {
+    public void setWidth(int width) {
         this.width = width;
     }
-    public void setLength(String length) {
+    public void setLength(int length) {
         this.length = length;
     }
     public String describe() {
-        return getName() + " c шириной " + width + " и длиной " + length;
+        return getName() + " c шириной " + width + " футов " + "и длиной " + length + " футов";
     }
 }
