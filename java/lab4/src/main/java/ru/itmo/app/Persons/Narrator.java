@@ -6,9 +6,11 @@ import ru.itmo.app.Things.Flashlight;
 
 public class Narrator extends Entity implements IFind, IClimb, IGo, IJump, IDoubt, IDecide {
     private Flashlight flashlight;
+    
     public Narrator() {
         super("мы");
     }
+    
     public void setFlashlight(Flashlight flashlight) {
         this.flashlight = flashlight;
     }
@@ -35,10 +37,7 @@ public class Narrator extends Entity implements IFind, IClimb, IGo, IJump, IDoub
         System.out.println(getName() + " отыскали " + something);
     }
     public void useFlashlight(String something) {
-        try {
-            flashlight.light(something);
-        } catch (LowBatteryException e) {
-            System.out.println(e.getMessage());
-        }
+        try {flashlight.turnLight(something);} 
+        catch (LowBatteryException e) {System.out.println(e.getMessage());}
     }
 }
