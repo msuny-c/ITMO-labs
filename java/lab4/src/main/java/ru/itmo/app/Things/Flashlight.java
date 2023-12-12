@@ -20,7 +20,7 @@ public class Flashlight extends Thing {
     public void light(String something) throws LowBatteryException {
         System.out.println(getName() + " высветил " + something);
         if (getBattery() <= 0) {
-            throw new LowBatteryException("Flashlight has too low battery");
+            throw new LowBatteryException("Flashlight has too low battery to use");
         } else {
             setModBattery(-1); }
     }
