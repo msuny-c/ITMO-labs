@@ -5,10 +5,13 @@ import ru.itmo.app.Persons.*;
 import ru.itmo.app.Things.*;
 import ru.itmo.app.Common.Directions;
 public class Main {
-    public static void main(String[] args) throws InvalidBatteryException {
+    public static void main(String[] args) {
         Narrator narrator = new Narrator();
-        narrator.setFlashlight(new Flashlight("фонарик", 10));
-
+        try {
+            narrator.setFlashlight(new Flashlight("фонарик", 10));
+        } catch (InvalidBatteryException e) {
+            System.out.println(e.getMessage());
+        }
         Building firstBuilding = new Building("строение");
         Doorway doorway = new Doorway("арочный проем");
         Building.Wall wall = firstBuilding.new Wall("стена");
