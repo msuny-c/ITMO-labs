@@ -39,5 +39,6 @@ public class Narrator extends Entity implements IFind, IClimb, IGo, IJump, IDoub
     public void useFlashlight(String something) {
         try {flashlight.turnLight(something);} 
         catch (LowBatteryException e) {System.out.println(e.getMessage());}
+        catch (NullPointerException e) {System.out.println("Narrator doesn't have flashlight");}
     }
 }
