@@ -1,9 +1,10 @@
 package ru.itmo.app.Commands;
 
-import ru.itmo.app.Exceptions.ObjectNotFoundException;
 import ru.itmo.app.Managers.CollectionManager;
 import ru.itmo.app.Models.HumanBeing;
 import ru.itmo.app.Managers.ScannerManager;
+
+import java.util.NoSuchElementException;
 
 /**
  * Class for command 'max_by_impact_speed'
@@ -17,7 +18,7 @@ public class MaxBySpeedCommand extends CollectionCommand {
     @Override
     public void execute(String[] args, ScannerManager scannerManager) {
         try {
-            if (collectionManager.getCollection().isEmpty()) throw new ObjectNotFoundException();
+            if (collectionManager.getCollection().isEmpty()) throw new NoSuchElementException();
             Long maxSpeed = null;
             for (HumanBeing object : collectionManager.getCollection()) {
                 if (maxSpeed == null && object.getImpactSpeed() != null) maxSpeed = object.getImpactSpeed();
@@ -27,7 +28,7 @@ public class MaxBySpeedCommand extends CollectionCommand {
             }
             if (maxSpeed == null) throw new NullPointerException();
             System.out.println(maxSpeed);
-        } catch (ObjectNotFoundException exception) {
+        } catch (NoSuchElementException exception) {
             System.out.println("Collection is empty!");
         } catch (NullPointerException exception) {
             System.out.println("There is no object with numeric value");

@@ -1,12 +1,12 @@
 package ru.itmo.app.Commands;
 
-import ru.itmo.app.Exceptions.ObjectNotFoundException;
 import ru.itmo.app.Managers.CollectionManager;
 import ru.itmo.app.Models.HumanBeing;
 import ru.itmo.app.Utilities.HumanGetter;
 import ru.itmo.app.Managers.ScannerManager;
 
 import java.util.Collections;
+import java.util.NoSuchElementException;
 
 /**
  * Class for command 'add_if_min'
@@ -21,14 +21,14 @@ public class AddIfMinCommand extends CollectionCommand {
     public void execute(String[] args, ScannerManager scannerManager) {
         try {
             HumanBeing newHuman = new HumanGetter(args, collectionManager, scannerManager).getHuman();
-            if (collectionManager.getCollection().isEmpty()) throw new ObjectNotFoundException();
+            if (collectionManager.getCollection().isEmpty()) throw new NoSuchElementException();
             if (newHuman.compareTo(Collections.min(collectionManager.getCollection())) < 0) {
                 collectionManager.getCollection().add(newHuman);
                 System.out.println("HumanBeing object was successfully added with ID" + newHuman.getId());
                 return;
             }
             System.out.println("HumanBeing object was not added: it's value isn't minimal");
-        } catch (ObjectNotFoundException exception) {
+        } catch (NoSuchElementException exception) {
             System.out.println("Collection is empty! Nothing to compare");
         }
     }
