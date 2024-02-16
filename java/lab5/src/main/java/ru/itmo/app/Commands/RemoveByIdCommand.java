@@ -25,7 +25,7 @@ public class RemoveByIdCommand extends CollectionCommand {
                     .filter(o -> o.getId().equals(id))
                     .findFirst().get();
             collectionManager.getCollection().remove(objectToRemove);
-            System.out.println(String.format("Object with ID %s was successfully removed", id));
+            System.out.printf("Object with ID %s was successfully removed\n", id);
         } catch (NoSuchElementException exception) {
             System.out.println("Object with given ID was not found");
         }

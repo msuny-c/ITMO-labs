@@ -18,7 +18,7 @@ public class UpdateCommand extends CollectionCommand {
         try {
             HumanBeing objectToUpdate = collectionManager.getCollection().stream().filter(o -> o.getId() == Integer.parseInt(args[0])).findFirst().get();
             objectToUpdate.update(new HumanGetter(Arrays.copyOfRange(args, 1, args.length), collectionManager, scannerManager).getHuman());
-            System.out.println("Object with ID %s was successfully updated");
+            System.out.printf("Object with ID %s was successfully updated\n", objectToUpdate.getId());
         } catch (NoSuchElementException exception) {
             System.out.println("Object with given ID was not found");
         }

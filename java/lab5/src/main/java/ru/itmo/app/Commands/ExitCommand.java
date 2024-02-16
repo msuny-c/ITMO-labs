@@ -15,6 +15,7 @@ public class ExitCommand extends AbstractCommand {
     @Override
     public void execute(String[] args, ScannerManager scannerManager) {
         System.out.println("Closing the application...");
+        scannerManager.scanner.close();
         System.exit(0);
     }
 
