@@ -7,6 +7,7 @@ import ru.itmo.app.Managers.ScannerManager;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.nio.file.Path;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 public class ScriptExecutor {
     private final InputManager inputManager;
     private final FileReader fileReader;
-    private static final ArrayList<Path> fileQueue = new ArrayList<>();
+    private static final ArrayDeque<Path> fileQueue = new ArrayDeque<>();
     private final Path path;
 
     /**
@@ -36,8 +37,8 @@ public class ScriptExecutor {
      * @throws FileNotFoundException if file not found.
      */
     public void execute() throws FileNotFoundException {
-        fileQueue.add(path.toAbsolutePath());
+        fileQueue.push(path.toAbsolutePath());
         inputManager.run(new ScannerManager(fileReader));
-        fileQueue.remove(path.toAbsolutePath());
+        fileQueue.pop();
     }
 }
