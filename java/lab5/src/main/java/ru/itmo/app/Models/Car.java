@@ -16,6 +16,7 @@ public class Car {
     }
 
     public void setName(String name) {
+        if (name.isEmpty()) throw new IllegalArgumentException();
         this.name = Objects.requireNonNull(name);
     }
 
