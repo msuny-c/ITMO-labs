@@ -30,6 +30,8 @@ public class AddIfMinCommand extends CollectionCommand {
             System.out.println("HumanBeing object was not added: it's value isn't minimal");
         } catch (NoSuchElementException exception) {
             System.out.println("Collection is empty! Nothing to compare");
+        } catch (IllegalArgumentException exception) {
+            System.out.println("Incorrect arguments. Should be: add_if_min {name} {realHero} {hasToothPick} {impactSpeed}");
         }
     }
 

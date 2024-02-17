@@ -21,6 +21,8 @@ public class UpdateCommand extends CollectionCommand {
             System.out.printf("Object with ID %s was successfully updated\n", objectToUpdate.getId());
         } catch (NoSuchElementException exception) {
             System.out.println("Object with given ID was not found");
+        } catch (IllegalArgumentException exception) {
+            System.out.println("Incorrect arguments. Should be: update {id}");
         }
     }
 

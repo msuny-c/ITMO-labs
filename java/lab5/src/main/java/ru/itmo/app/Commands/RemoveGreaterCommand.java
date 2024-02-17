@@ -16,8 +16,12 @@ public class RemoveGreaterCommand extends CollectionCommand {
 
     @Override
     public void execute(String[] args, ScannerManager scannerManager) {
-        HumanBeing newHuman = new HumanGetter(args, collectionManager, scannerManager).getHuman();
-        collectionManager.getCollection().removeIf(object -> object.compareTo(newHuman) > 0);
+        try {
+            HumanBeing newHuman = new HumanGetter(args, collectionManager, scannerManager).getHuman();
+            collectionManager.getCollection().removeIf(object -> object.compareTo(newHuman) > 0);
+        } catch (IllegalArgumentException exception) {
+            System.out.println("Incorrect arguments. Should be: remove_greater {name} {realHero} {hasToothPick} {impactSpeed}");
+        }
     }
 
     @Override

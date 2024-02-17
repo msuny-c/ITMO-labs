@@ -15,13 +15,17 @@ public class FilterNameCommand extends CollectionCommand {
 
     @Override
     public void execute(String[] args, ScannerManager scannerManager) {
-        if (args.length == 0) throw new IllegalArgumentException();
-        var collection = collectionManager.getCollection();
-        for (HumanBeing object : collection) {
-            if (object.getName().startsWith(String.join(" ", args))) System.out.println(object);
-            return;
+        try {
+            if (args.length == 0) throw new IllegalArgumentException();
+            var collection = collectionManager.getCollection();
+            for (HumanBeing object : collection) {
+                if (object.getName().startsWith(String.join(" ", args))) System.out.println(object);
+                return;
+            }
+            System.out.println("There's no objects which name starts with specified substring");
+        } catch (IllegalArgumentException exception) {
+            System.out.println("Incorrect arguments. Should be: filter_starts_with_name {sub}");
         }
-        System.out.println("There's no objects which name starts with specified substring");
     }
 
     @Override

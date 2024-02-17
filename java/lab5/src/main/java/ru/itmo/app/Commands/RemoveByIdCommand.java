@@ -28,6 +28,8 @@ public class RemoveByIdCommand extends CollectionCommand {
             System.out.printf("Object with ID %s was successfully removed\n", id);
         } catch (NoSuchElementException exception) {
             System.out.println("Object with given ID was not found");
+        } catch (IllegalArgumentException exception) {
+            System.out.println("Incorrect arguments. Should be: remove_by_id {id}");
         }
     }
 
