@@ -19,12 +19,13 @@ public class AvgOfSpeedCommand extends CollectionCommand {
     public void execute(String[] args, ScannerManager scannerManager) {
         try {
             long sum = 0; boolean t = true;
+            double num = 0;
             for (HumanBeing object : collectionManager.getCollection()) {
-                if (object.getImpactSpeed() != null) {sum += object.getImpactSpeed(); t = false;}
+                if (object.getImpactSpeed() != null) {sum += object.getImpactSpeed();num++; t = false;}
             }
             double average;
             if (collectionManager.getCollection().isEmpty() || t) throw new NoSuchElementException();
-            else average = sum / (double) collectionManager.getCollection().size();
+            else average = sum / num;
             System.out.println("Average of ImpactSpeed: " + average);
         } catch (NoSuchElementException exception) {
             System.out.println("Collection is empty or there is no object with numeric value");
