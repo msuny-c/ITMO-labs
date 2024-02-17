@@ -13,6 +13,10 @@ public class HumanBeing implements Comparable<HumanBeing> {
     private WeaponType weaponType;
     private Mood mood;
     private Car car;
+    
+    public HumanBeing() {
+        creationDate = new Date();
+    }
 
     public void setId(Integer id) {
         if (id <= 0) throw new IllegalArgumentException();
