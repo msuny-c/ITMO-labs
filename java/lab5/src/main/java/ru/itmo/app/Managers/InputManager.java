@@ -25,7 +25,7 @@ public class InputManager {
                 String inputLine = scannerManager.scanner.nextLine().trim();
                 if (inputLine.isEmpty()) throw new CommandNotFoundException();
                 String[] args = inputLine.split(" +");
-                commandManager.execute(args[0], Arrays.copyOfRange(args, 1, args.length), scannerManager);
+                commandManager.execute(args[0].trim(), Arrays.copyOfRange(args, 1, args.length), scannerManager);
             } catch (CommandNotFoundException exception) {
                 System.out.println("Command not found. Please try again: ");
             } catch (IllegalArgumentException exception) {
