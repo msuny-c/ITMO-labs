@@ -30,7 +30,7 @@ public class InputManager {
                 System.out.println("Command not found. Please try again: ");
             } catch (IllegalArgumentException exception) {
                 System.out.println("Wrong argument. Please try again: ");
-            }
+            } catch (NoSuchElementException ignored) {}
         }
     }
 }
