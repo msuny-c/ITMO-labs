@@ -2,6 +2,7 @@ package ru.itmo.app.Managers;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import ru.itmo.app.Exceptions.EmptyFileException;
 import ru.itmo.app.Exceptions.IllegalPathException;
 import ru.itmo.app.Managers.CollectionManager;
 
@@ -40,11 +41,12 @@ public class FileManager {
      * @throws IllegalPathException if path is not correct.
      * @throws IOException if error while parsing file.
      */
-    public CollectionManager load() throws IllegalPathException, IOException {
+    public CollectionManager load() throws IllegalPathException, IOException, EmptyFileException {
         XmlMapper mapper = new XmlMapper();
         Scanner reader = new Scanner(searchFile());
         StringBuilder xmlString = new StringBuilder();
         while (reader.hasNext()) xmlString.append(reader.nextLine());
+        if (xmlString.isEmpty()) throw new EmptyFileException();
         reader.close();
         return mapper.readValue(xmlString.toString(), CollectionManager.class);
     }

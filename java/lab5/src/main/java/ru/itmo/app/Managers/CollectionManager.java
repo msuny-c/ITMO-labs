@@ -1,5 +1,6 @@
 package ru.itmo.app.Managers;
 
+import ru.itmo.app.Exceptions.EmptyFileException;
 import ru.itmo.app.Exceptions.IllegalPathException;
 import ru.itmo.app.Models.HumanBeing;
 import java.io.FileNotFoundException;
@@ -29,6 +30,8 @@ public class CollectionManager {
             System.out.println("The specified file in path was not found. Collection wasn't loaded");
         } catch (IOException exception) {
             System.out.println("Error while parsing collection. Collection wasn't loaded");
+        } catch (EmptyFileException exception) {
+            System.out.println("Collection file is empty. Collection wasn't loaded");
         }
     }
     public CollectionManager() {}
