@@ -20,7 +20,7 @@ public class InputManager {
         if (scannerManager.isSystemIn) {
             System.out.println("Welcome to the CLI! Type \"help\" to see available commands.");
         }
-        while (scannerManager.scanner.hasNext()) {
+        while (scannerManager.isSystemIn || scannerManager.scanner.hasNext()) {
             try {
                 String inputLine = scannerManager.scanner.nextLine().trim();
                 if (inputLine.isEmpty()) throw new CommandNotFoundException();
