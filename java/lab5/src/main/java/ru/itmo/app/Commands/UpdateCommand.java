@@ -28,7 +28,7 @@ public class UpdateCommand extends CollectionCommand {
 
     @Override
     public int numOfArgs() {
-        return -1;
+        return 1;
     }
 
     @Override
