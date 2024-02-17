@@ -1,9 +1,7 @@
 package ru.itmo.app.Utilities;
 
-import ru.itmo.app.Managers.CollectionManager;
-import ru.itmo.app.Managers.ScannerManager;
+import ru.itmo.app.Managers.*
 import ru.itmo.app.Models.*;
-
 import java.util.*;
 
 /**
@@ -112,21 +110,21 @@ public class HumanGetter {
 
     /**
      * Gets Car field from user's input
-     * @return Car object.
      */
-    private Car getCar() {
+    private void setCar(HumanBeing object) {
         while (true) {
             try {
                 System.out.println("Please enter Car object. Syntax: {name} {cool}");
                 String inputLine = scannerManager.scanner.nextLine();
-                if (inputLine.trim().isEmpty()) return null;
+                if (inputLine.trim().isEmpty()) {object.setCar(null); return;}
                 String[] carArgs = inputLine.split(" +");
                 Car car = new Car();
                 car.setName(carArgs[0]);
-                car.setCool(parseBoolean(carArgs[1]));
-                return car;
+                car.setCool(parseBoolean(carArgs[1])); return;
             } catch (IndexOutOfBoundsException | IllegalArgumentException exception) {
                 System.out.println("Incorrect arguments. It should be: {name} {cool}");
+            } catch (NullPointerException exception) {
+                System.out.println("This value cannot be null. Please try again");
             }
         }
     }
@@ -160,7 +158,7 @@ public class HumanGetter {
         setCoordinates(newHuman);
         newHuman.setMood(getMood());
         newHuman.setWeaponType(getWeaponType());
-        newHuman.setCar(getCar());
+        setCar(newHuman);
         return newHuman;
     }
 
