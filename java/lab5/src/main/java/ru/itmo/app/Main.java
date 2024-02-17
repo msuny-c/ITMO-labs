@@ -1,8 +1,6 @@
 package ru.itmo.app;
 import ru.itmo.app.Commands.*;
 import ru.itmo.app.Managers.*;
-import ru.itmo.app.Managers.FileManager;
-import ru.itmo.app.Managers.ScannerManager;
 
 public class Main {
     public static void main(String[] args) {
