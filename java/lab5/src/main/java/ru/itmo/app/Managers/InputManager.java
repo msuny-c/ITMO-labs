@@ -1,5 +1,6 @@
 package ru.itmo.app.Managers;
 import ru.itmo.app.Exceptions.CommandNotFoundException;
+import ru.itmo.app.Exceptions.EOFException;
 
 import java.util.Arrays;
 
@@ -17,20 +18,21 @@ public class InputManager {
      * @param scannerManager scannerManager.
      */
     public void run(ScannerManager scannerManager) {
-        if (scannerManager.isSystemIn) {
+        if (scannerManager.isSystemStream) {
             System.out.println("Welcome to the CLI! Type \"help\" to see available commands.");
         }
-        while (scannerManager.isSystemIn || scannerManager.scanner.hasNext()) {
+        while (true) {
             try {
-                String inputLine = scannerManager.scanner.nextLine().trim();
-                if (inputLine.isEmpty()) throw new CommandNotFoundException();
-                String[] args = inputLine.split(" +");
+                String input = scannerManager.nextLine().trim();
+                String[] args = input.split(" +");
                 commandManager.execute(args[0].trim(), Arrays.copyOfRange(args, 1, args.length), scannerManager);
             } catch (CommandNotFoundException exception) {
-                System.out.println("Command not found. Please try again: ");
+                System.out.println("Command not found. Please try again:");
             } catch (IllegalArgumentException exception) {
-                System.out.println("Wrong argument. Please try again: ");
-            } catch (NoSuchElementException ignored) {}
+                System.out.println("Wrong argument. Please try again:");
+            } catch (EOFException exception) {
+                System.out.print("End of file.");
+            }
         }
     }
 }

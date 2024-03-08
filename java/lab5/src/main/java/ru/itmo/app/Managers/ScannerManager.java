@@ -1,6 +1,8 @@
 package ru.itmo.app.Managers;
+import ru.itmo.app.Exceptions.EOFException;
+
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -8,15 +10,23 @@ import java.util.Scanner;
  */
 public class ScannerManager {
     /**
-     * Checks if current stream is System.in
+     * Flag if current stream is System.in
      */
-    public boolean isSystemIn;
+    public final boolean isSystemStream;
+    private final Scanner scanner;
+
     public ScannerManager(InputStream inputStream) {
         scanner = new Scanner(inputStream);
-        isSystemIn = true;
+        isSystemStream = inputStream.equals(System.in);
     }
-    public ScannerManager(InputStreamReader inputStreamReader) {
-        scanner = new Scanner(inputStreamReader);
+    public String nextLine() throws EOFException {
+        try {
+            return scanner.nextLine();
+        } catch (NoSuchElementException exception) {
+            throw new EOFException();
+        }
     }
-    public final Scanner scanner;
+    public void close() {
+        scanner.close();
+    }
 }
