@@ -1,7 +1,10 @@
 package ru.itmo.app.Utilities;
 
-import ru.itmo.app.Managers.*
+import ru.itmo.app.Managers.CollectionManager;
+import ru.itmo.app.Managers.ScannerManager;
 import ru.itmo.app.Models.*;
+
+import java.io.EOFException;
 import java.util.*;
 
 /**
@@ -58,7 +61,7 @@ public class HumanGetter {
         while (true) {
             System.out.println("Enter Mood field (SORROW, LONGING, APATHY, CALM, FRENZY):");
             try {
-                String value = scannerManager.scanner.nextLine().trim();
+                String value = scannerManager.nextLine().trim();
                 if (value.isEmpty()) return null;
                 return Mood.valueOf(value);
             } catch (IllegalArgumentException exception) {
@@ -71,11 +74,11 @@ public class HumanGetter {
      * Gets WeaponType field from user's input
      * @return WeaponType object.
      */
-    private WeaponType getWeaponType() {
+    private WeaponType getWeaponType()  {
         while (true) {
             System.out.println("Enter WeaponType field (RIFLE, KNIFE, MACHINE_GUN, BAT):");
             try {
-                String value = scannerManager.scanner.nextLine().trim();
+                String value = scannerManager.nextLine().trim();
                 if (value.isEmpty()) return null;
                 return WeaponType.valueOf(value);
             } catch (IllegalArgumentException exception) {
@@ -87,11 +90,11 @@ public class HumanGetter {
     /**
      * Sets coordinates to HumanBeing object with user's input
      */
-    private void setCoordinates(HumanBeing object) {
+    private void setCoordinates(HumanBeing object)  {
         while (true) {
             try {
                 System.out.println("Enter Coordinates object. Syntax: {x} {y}");
-                String inputLine = scannerManager.scanner.nextLine();
+                String inputLine = scannerManager.nextLine();
                 if (inputLine.trim().isEmpty()) {object.setCoordinates(null); return;}
                 String[] coordinatesArgs = inputLine.split(" +");
                 if (coordinatesArgs.length > 2) throw new IllegalArgumentException();
@@ -115,11 +118,12 @@ public class HumanGetter {
         while (true) {
             try {
                 System.out.println("Please enter Car object. Syntax: {name} {cool}");
-                String inputLine = scannerManager.scanner.nextLine();
+                String inputLine = scannerManager.nextLine();
                 if (inputLine.trim().isEmpty()) {object.setCar(null); return;}
                 String[] carArgs = inputLine.split(" +");
                 Car car = new Car();
                 car.setName(carArgs[0]);
+                object.setCar(car);
                 car.setCool(parseBoolean(carArgs[1])); return;
             } catch (IndexOutOfBoundsException | IllegalArgumentException exception) {
                 System.out.println("Incorrect arguments. It should be: {name} {cool}");
@@ -139,7 +143,7 @@ public class HumanGetter {
             if (humanBeing.getId() != null) idOfHumans.add(humanBeing.getId());
         }
         int fid = 1;
-        if (!idOfHumans.isEmpty()) fid = idOfHumans.getFirst();
+        if (!idOfHumans.isEmpty()) fid = idOfHumans.first();
         for (int id : idOfHumans) {
             if (fid != id) break;
             fid++;
