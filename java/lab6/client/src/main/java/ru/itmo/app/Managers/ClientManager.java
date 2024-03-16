@@ -10,7 +10,6 @@ import java.net.SocketException;
 import java.nio.ByteBuffer;
 
 public class ClientManager {
-    private final int ATTEMPTS = 5;
     private final InetAddress address;
     private final Integer port;
     private Socket socket;
