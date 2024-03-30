@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import ru.itmo.app.Network.Error;
 
 public class ServerManager {
-    private final int HEADER = 4;
     private final HashMap<SocketChannel, ClientData> session = new HashMap<>();
     private final Integer port;
     private final CommandHandler commandHandler;
