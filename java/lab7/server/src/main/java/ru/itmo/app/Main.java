@@ -1,25 +1,29 @@
 package ru.itmo.app;
 
-import com.google.common.hash.Hashing;
 import ru.itmo.app.Commands.*;
+import ru.itmo.app.Database.AuthManager;
+import ru.itmo.app.Database.DatabaseManager;
+import ru.itmo.app.Database.HumanBeingProcessor;
 import ru.itmo.app.Managers.*;
+import ru.itmo.app.Models.HumanBeing;
+import ru.itmo.app.Utilities.HashManager;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) throws IOException, SQLException {
 
+        HumanBeingProcessor processor = new HumanBeingProcessor();
+        DatabaseManager<HumanBeing> databaseManager = new DatabaseManager<>(processor,"s408194","GsVXRpw7kHqtNIp6");
         HashManager hashManager = new HashManager();
-        hashManager.generateSalt();
         AuthManager authManager = new AuthManager(hashManager);
-        DatabaseManager databaseManager = new DatabaseManager("s408194","GsVXRpw7kHqtNIp6");
         authManager.setConnection(databaseManager.getConnection());
         CollectionManager collectionManager = new CollectionManager(databaseManager);
         CommandManager commandManager = new CommandManager();
 
         commandManager.set(new AddCommand("add"));
+        commandManager.set(new ReorderCommand("reorder"));
         commandManager.set(new AvgOfSpeedCommand("average_of_impact_speed"));
         commandManager.set(new UpdateCommand("update"));
         commandManager.set(new ShowCommand("show"));

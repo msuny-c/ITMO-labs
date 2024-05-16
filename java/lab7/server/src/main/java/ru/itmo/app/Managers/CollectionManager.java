@@ -1,35 +1,32 @@
 package ru.itmo.app.Managers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.itmo.app.Database.DatabaseManager;
 import ru.itmo.app.Models.HumanBeing;
 import ru.itmo.app.Network.Session;
 
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Stack;
+import java.util.*;
 
 public class CollectionManager {
     private static final Logger logger = LoggerFactory.getLogger(CollectionManager.class);
-    private final DatabaseManager databaseManager;
-    private Stack<HumanBeing> collection = new Stack<>();
+    private final DatabaseManager<HumanBeing> databaseManager;
+    private List<HumanBeing> collection = new Stack<>();
 
-    public CollectionManager(DatabaseManager databaseManager) {
+    public CollectionManager(DatabaseManager<HumanBeing> databaseManager) {
         this.databaseManager = databaseManager;
         try {
             collection = databaseManager.getCollection();
         } catch (SQLException exception) {
             logger.error(exception.getMessage());
-            logger.error("Error while loading collection from database.");
-            System.exit(500);
+            logger.error("Error occurred while loading collection from the database.");
         }
     }
     public boolean add(HumanBeing object) {
         try {
-            int id = databaseManager.add(object, Session.getCurrentUser());
-            object.setId(id);
             object.setUser(Session.getCurrentUser());
+            int id = databaseManager.add(object);
+            object.setId(id);
             collection.add(object);
             return true;
         } catch (SQLException exception) {
@@ -40,7 +37,7 @@ public class CollectionManager {
 
     public boolean update(Integer id, HumanBeing object) {
         try {
-            if (databaseManager.checkPermission(id, Session.getCurrentUser())) {
+            if (databaseManager.isPermitted(id, Session.getCurrentUser())) {
                 databaseManager.update(id, object);
                 var objectToUpdate = collection.stream().filter(o -> o.id() == id).findFirst().get();
                 objectToUpdate.update(object);
@@ -68,7 +65,7 @@ public class CollectionManager {
 
     public boolean remove(Integer id) {
         try {
-            if (databaseManager.checkPermission(id, Session.getCurrentUser())) {
+            if (databaseManager.isPermitted(id, Session.getCurrentUser())) {
                 databaseManager.remove(id);
                 collection.removeIf(o -> Objects.equals(o.id(), id));
                 return true;
@@ -79,8 +76,17 @@ public class CollectionManager {
             return false;
         }
     }
-    public void reorder() {
-
+    public boolean reorder() {
+        try {
+            List<HumanBeing> reordered = new Stack<>();
+            for (int i = collection.size() - 1; i >= 0; i--) reordered.add(collection.get(i));
+            databaseManager.setCollection(reordered);
+            collection = reordered;
+            return true;
+        } catch (SQLException exception) {
+            logger.error(exception.getMessage());
+            return false;
+        }
     }
     public void removeGreater(HumanBeing object) {
         try {
@@ -104,7 +110,7 @@ public class CollectionManager {
     }
 
 
-    public Stack<HumanBeing> getCollection() {
+    public Collection<HumanBeing> getCollection() {
         return collection;
     }
 }

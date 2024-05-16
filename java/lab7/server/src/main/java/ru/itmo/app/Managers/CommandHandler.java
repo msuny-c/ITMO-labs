@@ -1,6 +1,8 @@
 package ru.itmo.app.Managers;
 
+import ru.itmo.app.Database.AuthManager;
 import ru.itmo.app.Exceptions.*;
+import ru.itmo.app.Interfaces.IAuthManager;
 import ru.itmo.app.Network.*;
 import ru.itmo.app.Network.Error;
 
@@ -9,8 +11,8 @@ import java.sql.SQLException;
 public class CommandHandler {
     private final CollectionManager collectionManager;
     private final CommandManager commandManager;
-    private final AuthManager authManager;
-    public CommandHandler(CollectionManager collectionManager, CommandManager commandManager, AuthManager authManager) {
+    private final IAuthManager authManager;
+    public CommandHandler(CollectionManager collectionManager, CommandManager commandManager, IAuthManager authManager) {
         this.collectionManager = collectionManager;
         this.commandManager = commandManager;
         this.authManager = authManager;

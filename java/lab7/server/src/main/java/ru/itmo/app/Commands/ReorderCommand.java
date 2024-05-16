@@ -11,10 +11,10 @@ public class ReorderCommand extends AbstractCommand {
 
     @Override
     public String execute(CollectionManager collectionManager, HumanBeing object, String[] args) {
-        var collection = collectionManager.getCollection();
-        for (int i = 0; i < collection.size() - 1; i++)
-            collection.insertElementAt(collection.pop(), i);
-        return "Collection was reordered successfully.";
+        boolean success = collectionManager.reorder();
+        if (success) return "Collection was reordered successfully.";
+        else return "Collection wasn't reordered";
+
     }
 
     @Override
