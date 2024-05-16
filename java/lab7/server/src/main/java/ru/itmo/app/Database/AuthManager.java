@@ -1,25 +1,26 @@
 package ru.itmo.app.Database;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.itmo.app.Exceptions.UserException;
 import ru.itmo.app.Interfaces.IAuthManager;
-import ru.itmo.app.Utilities.HashManager;
+import static ru.itmo.app.Utilities.HashUtils.*;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class AuthManager implements IAuthManager {
     private static final Logger logger = LoggerFactory.getLogger(AuthManager.class);
     private Connection connection;
-    private final HashManager hashManager;
-    public AuthManager(HashManager hashManager) {
-        this.hashManager = hashManager;
-    }
+    private final int SALT_LENGTH = 128;
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
     public void authUser(String user, String password) throws UserException, SQLException {
         if (user == null || password == null) throw new UserException("Login information was not provided.");
-        if (!isExists(user) || !hashManager.getHash(password + getSalt(user)).equals(getUserPassword(user))) {
+        if (!isExists(user) || !hash(password + getSalt(user)).equals(getUserPassword(user))) {
             logger.warn("Failed login attempt to the account " + "\"" + user + "\"" + ".");
             throw new UserException("The provided password is invalid.");
         }
@@ -32,8 +33,8 @@ public class AuthManager implements IAuthManager {
             throw new UserException("User with the same name already exists.");
         }
         try {
-            String salt = hashManager.generateSalt();
-            String hashedPassword = hashManager.getHash(password + salt);
+            String salt = generateString(SALT_LENGTH);
+            String hashedPassword = hash(password + salt);
             String query = "INSERT INTO users VALUES (?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, user);
