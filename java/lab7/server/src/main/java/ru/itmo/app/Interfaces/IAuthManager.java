@@ -5,5 +5,5 @@ import java.sql.SQLException;
 
 public interface IAuthManager {
     void register(String username, String password) throws UserException, SQLException;
-    void authUser(String username, String password) throws UserException, SQLException;
+    void auth(String username, String password) throws UserException, SQLException;
 }

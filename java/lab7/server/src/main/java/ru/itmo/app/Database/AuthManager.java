@@ -6,10 +6,7 @@ import ru.itmo.app.Exceptions.UserException;
 import ru.itmo.app.Interfaces.IAuthManager;
 import static ru.itmo.app.Utilities.HashUtils.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class AuthManager implements IAuthManager {
     private static final Logger logger = LoggerFactory.getLogger(AuthManager.class);
@@ -18,9 +15,9 @@ public class AuthManager implements IAuthManager {
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
-    public void authUser(String user, String password) throws UserException, SQLException {
+    public void auth(String user, String password) throws UserException, SQLException {
         if (user == null || password == null) throw new UserException("Login information was not provided.");
-        if (!isExists(user) || !hash(password + getSalt(user)).equals(getUserPassword(user))) {
+        if (!isExists(user) || !hash(password + getUserSalt(user)).equals(getUserPassword(user))) {
             logger.warn("Failed login attempt to the account " + "\"" + user + "\"" + ".");
             throw new UserException("The provided password is invalid.");
         }
@@ -35,12 +32,8 @@ public class AuthManager implements IAuthManager {
         try {
             String salt = generateString(SALT_LENGTH);
             String hashedPassword = hash(password + salt);
-            String query = "INSERT INTO users VALUES (?, ?, ?)";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, user);
-            statement.setString(2, hashedPassword);
-            statement.setString(3, salt);
-            statement.executeUpdate();
+            String query = String.format("INSERT INTO users VALUES ('%s', '%s', '%s')", user, hashedPassword, salt);
+            connection.createStatement().executeUpdate(query);
             logger.info("Successfully registered account " + "\"" + user + "\"" + ".");
         } catch (SQLException exception) {
             logger.error(exception.getMessage());
@@ -49,10 +42,8 @@ public class AuthManager implements IAuthManager {
     }
     public String getUserPassword(String user) throws SQLException {
         try {
-            String query = "SELECT users.password FROM users WHERE users.name = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, user);
-            ResultSet resultSet = statement.executeQuery();
+            String query = String.format("SELECT users.password FROM users WHERE users.name = '%s'", user);
+            ResultSet resultSet = connection.createStatement().executeQuery(query);
             if (resultSet.next()) {
                 return resultSet.getString(1);
             }
@@ -64,10 +55,8 @@ public class AuthManager implements IAuthManager {
     }
     public boolean isExists(String user) throws SQLException {
         try {
-            String query = "SELECT CAST(COUNT(1) AS INTEGER) FROM users WHERE users.name = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, user);
-            ResultSet resultSet = statement.executeQuery();
+            String query = String.format("SELECT CAST(COUNT(1) AS INTEGER) FROM users WHERE users.name = '%s'", user);
+            ResultSet resultSet = connection.createStatement().executeQuery(query);
             if (resultSet.next()) {
                 return resultSet.getBoolean(1);
             }
@@ -77,12 +66,10 @@ public class AuthManager implements IAuthManager {
             throw exception;
         }
     }
-    public String getSalt(String user) throws SQLException {
+    public String getUserSalt(String user) throws SQLException {
         try {
-            String query = "SELECT salt FROM users WHERE name = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, user);
-            ResultSet resultSet = statement.executeQuery();
+            String query = String.format("SELECT salt FROM users WHERE name = '%s'", user);
+            ResultSet resultSet = connection.createStatement().executeQuery(query);
             if (resultSet.next()) {
                 return resultSet.getString("salt");
             }
