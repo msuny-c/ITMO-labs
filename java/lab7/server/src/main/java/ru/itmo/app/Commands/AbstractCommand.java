@@ -1,8 +1,8 @@
 package ru.itmo.app.Commands;
 
-import ru.itmo.app.Interfaces.Command;
+import ru.itmo.app.Interfaces.ICommand;
 
-public abstract class AbstractCommand implements Command {
+public abstract class AbstractCommand implements ICommand {
     private final String name;
     public AbstractCommand(String name) {
         this.name = name;
