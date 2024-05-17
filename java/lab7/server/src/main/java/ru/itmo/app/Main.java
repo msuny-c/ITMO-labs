@@ -4,6 +4,7 @@ import ru.itmo.app.Commands.*;
 import ru.itmo.app.Database.AuthManager;
 import ru.itmo.app.Database.DatabaseManager;
 import ru.itmo.app.Database.HumanBeingProcessor;
+import ru.itmo.app.Interfaces.IServerManager;
 import ru.itmo.app.Managers.*;
 import ru.itmo.app.Models.HumanBeing;
 
@@ -13,8 +14,7 @@ import java.sql.SQLException;
 public class Main {
     public static void main(String[] args) throws IOException, SQLException {
 
-        HumanBeingProcessor processor = new HumanBeingProcessor();
-        DatabaseManager<HumanBeing> databaseManager = new DatabaseManager<>(processor,"s408194","GsVXRpw7kHqtNIp6");
+        DatabaseManager<HumanBeing> databaseManager = new DatabaseManager<>(new HumanBeingProcessor(),"s408194","GsVXRpw7kHqtNIp6");
         AuthManager authManager = new AuthManager();
         authManager.setConnection(databaseManager.getConnection());
         CollectionManager collectionManager = new CollectionManager(databaseManager);
@@ -35,7 +35,7 @@ public class Main {
         commandManager.set(new AddIfMinCommand("add_if_min"));
 
         CommandHandler commandHandler = new CommandHandler(collectionManager, commandManager, authManager);
-        ServerManager serverManager = new ServerManager(9142, commandHandler);
+        IServerManager serverManager = new ServerManager(9142, commandHandler);
         serverManager.run();
 
     }
