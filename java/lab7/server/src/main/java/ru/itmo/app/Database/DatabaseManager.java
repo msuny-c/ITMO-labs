@@ -7,20 +7,21 @@ import ru.itmo.app.Interfaces.IDataBaseProcessor;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
 public class DatabaseManager<T> {
     private static final Logger logger = LoggerFactory.getLogger(DatabaseManager.class);
     private final IDataBaseProcessor<T> processor;
-    private final Connection connection;
-    public DatabaseManager(IDataBaseProcessor<T> processor, String username, String password) throws SQLException {
+    private Connection connection;
+    public DatabaseManager(IDataBaseProcessor<T> processor) {
         this.processor = processor;
+    }
+    public void connect(String url, String username, String password) throws SQLException {
         Properties auth = new Properties();
         auth.put("user", username);
         auth.put("password", password);
-        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/studs", auth);
+        connection = DriverManager.getConnection(url, auth);
         processor.setConnection(connection);
     }
     public int add(T object) throws SQLException {
