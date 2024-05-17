@@ -1,6 +1,8 @@
 package ru.itmo.app.Managers;
 
 import ru.itmo.app.Exceptions.ServerException;
+import ru.itmo.app.Interfaces.ICommandHandler;
+import ru.itmo.app.Interfaces.IServerManager;
 import ru.itmo.app.Network.*;
 
 import java.io.*;
@@ -16,14 +18,14 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import ru.itmo.app.Network.Error;
 
-public class ServerManager {
+public class ServerManager implements IServerManager {
     private final int HEADER = 4;
     private final HashMap<SocketChannel, ClientData> session = new HashMap<>();
     private final Integer port;
-    private final CommandHandler commandHandler;
+    private final ICommandHandler commandHandler;
     private static final Logger logger = LoggerFactory.getLogger(ServerManager.class);
 
-    public ServerManager(Integer port, CommandHandler commandHandler) {
+    public ServerManager(Integer port, ICommandHandler commandHandler) {
         this.port = port;
         this.commandHandler = commandHandler;
     }

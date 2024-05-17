@@ -1,13 +1,14 @@
 package ru.itmo.app.Managers;
 
 import ru.itmo.app.Exceptions.*;
+import ru.itmo.app.Interfaces.ICommandManager;
 import ru.itmo.app.Models.HumanBeing;
-import ru.itmo.app.Interfaces.Command;
+import ru.itmo.app.Interfaces.ICommand;
 import java.util.HashMap;
 
-public class CommandManager {
-    private final HashMap<String, Command> commands = new HashMap<>();
-    public void set(Command command) {
+public class CommandManager implements ICommandManager<HumanBeing> {
+    private final HashMap<String, ICommand> commands = new HashMap<>();
+    public void set(ICommand command) {
         commands.put(command.getName(), command);
     }
 

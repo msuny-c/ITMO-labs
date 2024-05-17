@@ -1,14 +1,14 @@
 package ru.itmo.app.Managers;
 
-import ru.itmo.app.Database.AuthManager;
 import ru.itmo.app.Exceptions.*;
 import ru.itmo.app.Interfaces.IAuthManager;
+import ru.itmo.app.Interfaces.ICommandHandler;
 import ru.itmo.app.Network.*;
 import ru.itmo.app.Network.Error;
 
 import java.sql.SQLException;
 
-public class CommandHandler {
+public class CommandHandler implements ICommandHandler {
     private final CollectionManager collectionManager;
     private final CommandManager commandManager;
     private final IAuthManager authManager;
@@ -20,16 +20,16 @@ public class CommandHandler {
     public Response handle(CommandRequest request) {
         try {
             if (request.action() == Action.REGISTER) {
-                authManager.register(request.login(), request.pass());
-                return new Response("Successfully registered account " + "\"" + request.login() + "\"" + ".", Status.OK, new Error(null));
+                authManager.register(request.user(), request.password());
+                return new Response("Successfully registered account " + "\"" + request.user() + "\"" + ".", Status.OK, new Error(null));
             }
             if (request.action() == Action.LOGIN) {
-                authManager.authUser(request.login(), request.pass());
-                return new Response("Successful login to the account " + "\"" + request.login() + "\"" + ".", Status.OK, new Error(null));
+                authManager.auth(request.user(), request.password());
+                return new Response("Successful login to the account " + "\"" + request.user() + "\"" + ".", Status.OK, new Error(null));
             }
             if (request.action() == Action.COMMAND) {
-                authManager.authUser(request.login(), request.pass());
-                Session.setCurrentUser(request.login());
+                authManager.auth(request.user(), request.password());
+                Session.setCurrentUser(request.user());
                 String result = commandManager.execute(collectionManager, request.command(), request.object(), request.args());
                 Session.removeCurrentUser();
                 return new Response(result, Status.OK, null);
