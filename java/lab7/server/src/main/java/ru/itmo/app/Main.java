@@ -14,7 +14,8 @@ import java.sql.SQLException;
 public class Main {
     public static void main(String[] args) throws IOException, SQLException {
 
-        DatabaseManager<HumanBeing> databaseManager = new DatabaseManager<>(new HumanBeingProcessor(),"s408194","GsVXRpw7kHqtNIp6");
+        DatabaseManager<HumanBeing> databaseManager = new DatabaseManager<>(new HumanBeingProcessor());
+        databaseManager.connect("jdbc:postgresql://localhost:5432/studs", "s408194","GsVXRpw7kHqtNIp6");
         AuthManager authManager = new AuthManager();
         authManager.setConnection(databaseManager.getConnection());
         CollectionManager collectionManager = new CollectionManager(databaseManager);
