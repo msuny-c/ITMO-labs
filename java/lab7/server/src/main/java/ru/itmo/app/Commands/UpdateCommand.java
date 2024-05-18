@@ -1,5 +1,6 @@
 package ru.itmo.app.Commands;
 
+import ru.itmo.app.Exceptions.NotPermissionException;
 import ru.itmo.app.Managers.CollectionManager;
 import ru.itmo.app.Models.HumanBeing;
 
@@ -13,14 +14,13 @@ public class UpdateCommand extends AbstractCommand {
     @Override
     public String execute(CollectionManager collectionManager, HumanBeing object, String[] args) {
         try {
-            Integer id = Integer.parseInt(args[0]);
-            boolean success = collectionManager.update(id, object);
-            if (success) {
-                return String.format("Object with ID %s was successfully updated.", id);
-            }
-            return "You do not have enough rights to modify this object.";
+            int id = Integer.parseInt(args[0]);
+            collectionManager.update(id, object);
+            return String.format("Object with ID %s was successfully updated.", id);
         } catch (NoSuchElementException exception) {
             return "Object with given ID was not found.";
+        } catch (NotPermissionException exception) {
+            return "You do not have enough rights to modify this object.";
         }
     }
 

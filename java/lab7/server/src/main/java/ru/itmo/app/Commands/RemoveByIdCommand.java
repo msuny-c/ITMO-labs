@@ -1,6 +1,7 @@
 package ru.itmo.app.Commands;
 
-import ru.itmo.app.Exceptions.UserException;
+import ru.itmo.app.Exceptions.AuthException;
+import ru.itmo.app.Exceptions.NotPermissionException;
 import ru.itmo.app.Managers.CollectionManager;
 import ru.itmo.app.Models.HumanBeing;
 
@@ -12,16 +13,15 @@ public class RemoveByIdCommand extends AbstractCommand {
     }
 
     @Override
-    public String execute(CollectionManager collectionManager, HumanBeing object, String[] args) throws UserException {
+    public String execute(CollectionManager collectionManager, HumanBeing object, String[] args) {
         try {
             int id = Integer.parseInt(args[0]);
-            boolean success = collectionManager.remove(id);
-            if (success) {
-                return String.format("Object with id %s was successfully removed.", id);
-            }
-            return "You do not have enough rights to delete this object.";
+            collectionManager.remove(id);
+            return String.format("Object with id %s was successfully removed.", id);
         } catch (NoSuchElementException exception) {
             return "Object with given id was not found.";
+        } catch (NotPermissionException exception) {
+            return "You do not have enough rights to delete this object.";
         }
     }
 

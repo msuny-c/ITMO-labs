@@ -1,5 +1,6 @@
 package ru.itmo.app.Commands;
 
+import ru.itmo.app.Exceptions.NotPermissionException;
 import ru.itmo.app.Managers.CollectionManager;
 import ru.itmo.app.Models.HumanBeing;
 
@@ -10,11 +11,12 @@ public class ClearCommand extends AbstractCommand {
 
     @Override
     public String execute(CollectionManager collectionManager, HumanBeing object, String[] args) {
-        boolean cleared = collectionManager.clear();
-        if (cleared) {
+        try {
+            collectionManager.clear();
             return "Your objects have been successfully deleted.";
+        } catch (NotPermissionException exception) {
+            return "There are no objects you created in the collection.";
         }
-        return "There are no objects you created in the collection.";
     }
 
     @Override
