@@ -1,6 +1,6 @@
 package ru.itmo.app.Commands;
 
-import ru.itmo.app.Exceptions.UserException;
+import ru.itmo.app.Exceptions.AuthException;
 import ru.itmo.app.Managers.CollectionManager;
 import ru.itmo.app.Models.HumanBeing;
 
@@ -12,13 +12,10 @@ public class AddCommand extends AbstractCommand {
     }
 
     @Override
-    public String execute(CollectionManager collectionManager, HumanBeing object, String[] args) throws UserException {
+    public String execute(CollectionManager collectionManager, HumanBeing object, String[] args) {
         Objects.requireNonNull(object);
-        boolean success = collectionManager.add(object);
-        if (success) {
-            return "Object was successfully added with id " + object.id() + ".";
-        }
-        return "You do not have enough rights to add this object";
+        collectionManager.add(object);
+        return "Object was successfully added with id " + object.id() + ".";
     }
 
     @Override
