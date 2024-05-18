@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Properties;
 
 public class DatabaseManager<T> {
-    private static final Logger logger = LoggerFactory.getLogger(DatabaseManager.class);
     private final IDataBaseProcessor<T> processor;
     private Connection connection;
     public DatabaseManager(IDataBaseProcessor<T> processor) {
