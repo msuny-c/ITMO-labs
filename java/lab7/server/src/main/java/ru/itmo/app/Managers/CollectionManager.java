@@ -2,6 +2,7 @@ package ru.itmo.app.Managers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.itmo.app.Database.DatabaseManager;
+import ru.itmo.app.Exceptions.NotPermissionException;
 import ru.itmo.app.Models.HumanBeing;
 import ru.itmo.app.Network.Session;
 
@@ -22,70 +23,63 @@ public class CollectionManager {
             logger.error("Error occurred while loading collection from the database.");
         }
     }
-    public boolean add(HumanBeing object) {
+    public void add(HumanBeing object) {
         try {
             object.setUser(Session.getCurrentUser());
             int id = databaseManager.add(object);
             object.setId(id);
             collection.add(object);
-            return true;
         } catch (SQLException exception) {
             logger.error(exception.getMessage());
-            return false;
         }
     }
 
-    public boolean update(Integer id, HumanBeing object) {
+    public void update(Integer id, HumanBeing object) throws NotPermissionException {
         try {
             if (databaseManager.isPermitted(id, Session.getCurrentUser())) {
                 databaseManager.update(id, object);
                 var objectToUpdate = collection.stream().filter(o -> o.id() == id).findFirst().get();
                 objectToUpdate.update(object);
-                return true;
             }
-            return false;
+            throw new NotPermissionException();
         } catch (SQLException exception) {
             logger.error(exception.getMessage());
-            return false;
         }
     }
-    public boolean clear() {
+    public void clear() throws NotPermissionException {
         try {
             var objectsOfUser = collection.stream().filter(o -> o.getUser().equals(Session.getCurrentUser())).toList();
             for (HumanBeing object: objectsOfUser) {
                 databaseManager.remove(object.id());
             }
             collection.removeIf(o -> o.getUser().equals(Session.getCurrentUser()));
-            return !objectsOfUser.isEmpty();
+            if (objectsOfUser.isEmpty()) {
+                throw new NotPermissionException();
+            };
         } catch (SQLException exception) {
             logger.error(exception.getMessage());
-            return false;
         }
     }
 
-    public boolean remove(Integer id) {
+    public void remove(Integer id) throws NotPermissionException {
         try {
             if (databaseManager.isPermitted(id, Session.getCurrentUser())) {
                 databaseManager.remove(id);
                 collection.removeIf(o -> Objects.equals(o.id(), id));
-                return true;
             }
-            return false;
+            throw new NotPermissionException();
         } catch (SQLException exception) {
             logger.error(exception.getMessage());
-            return false;
         }
     }
-    public boolean reorder() {
+    public void reorder() {
         try {
             List<HumanBeing> reordered = new Stack<>();
             for (int i = collection.size() - 1; i >= 0; i--) reordered.add(collection.get(i));
             databaseManager.setCollection(reordered);
             collection = reordered;
-            return true;
         } catch (SQLException exception) {
             logger.error(exception.getMessage());
-            return false;
         }
     }
     public void removeGreater(HumanBeing object) {

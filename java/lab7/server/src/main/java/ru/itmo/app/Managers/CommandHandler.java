@@ -1,5 +1,7 @@
 package ru.itmo.app.Managers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.itmo.app.Exceptions.*;
 import ru.itmo.app.Interfaces.IAuthManager;
 import ru.itmo.app.Interfaces.ICommandHandler;
@@ -9,6 +11,7 @@ import ru.itmo.app.Network.Error;
 import java.sql.SQLException;
 
 public class CommandHandler implements ICommandHandler {
+    private static final Logger logger = LoggerFactory.getLogger(CommandHandler.class);
     private final CollectionManager collectionManager;
     private final CommandManager commandManager;
     private final IAuthManager authManager;
@@ -35,7 +38,7 @@ public class CommandHandler implements ICommandHandler {
                 return new Response(result, Status.OK, null);
             }
             return new Response(null, Status.FAIL, new Error(new ServerException("Unknown action.")));
-        } catch (UserException exception) {
+        } catch (AuthException exception) {
             return new Response(exception.getMessage(), Status.FAIL, null);
         } catch (CommandNotFoundException exception) {
             return new Response(null, Status.FAIL, new Error(new ServerException("Command \"" + request.command() + "\" not found.")));
@@ -44,6 +47,7 @@ public class CommandHandler implements ICommandHandler {
         } catch (IllegalArgumentException exception) {
             return new Response(null, null, new Error(new ServerException("Provided illegal arguments.")));
         } catch (SQLException exception) {
+            logger.error(exception.getMessage());
             return new Response("Unknown server side error.", Status.FAIL, null);
         }
     }

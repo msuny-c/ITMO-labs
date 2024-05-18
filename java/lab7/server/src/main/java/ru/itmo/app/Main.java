@@ -2,11 +2,15 @@ package ru.itmo.app;
 
 import ru.itmo.app.Commands.*;
 import ru.itmo.app.Database.AuthManager;
+import ru.itmo.app.Database.AuthProcessor;
 import ru.itmo.app.Database.DatabaseManager;
 import ru.itmo.app.Database.HumanBeingProcessor;
+import ru.itmo.app.Interfaces.IAuthProcessor;
 import ru.itmo.app.Interfaces.IServerManager;
+import ru.itmo.app.Interfaces.IUserValidator;
 import ru.itmo.app.Managers.*;
 import ru.itmo.app.Models.HumanBeing;
+import ru.itmo.app.Network.UserValidator;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -16,8 +20,12 @@ public class Main {
 
         DatabaseManager<HumanBeing> databaseManager = new DatabaseManager<>(new HumanBeingProcessor());
         databaseManager.connect("jdbc:postgresql://localhost:5432/studs", "s408194","GsVXRpw7kHqtNIp6");
-        AuthManager authManager = new AuthManager();
+
+        IUserValidator userValidator = new UserValidator();
+        IAuthProcessor processor = new AuthProcessor();
+        AuthManager authManager = new AuthManager(userValidator, processor);
         authManager.setConnection(databaseManager.getConnection());
+
         CollectionManager collectionManager = new CollectionManager(databaseManager);
         CommandManager commandManager = new CommandManager();
 

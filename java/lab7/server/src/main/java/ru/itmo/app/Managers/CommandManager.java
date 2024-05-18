@@ -12,7 +12,7 @@ public class CommandManager implements ICommandManager<HumanBeing> {
         commands.put(command.getName(), command);
     }
 
-    public String execute(CollectionManager collectionManager, String name, HumanBeing object, String[] args) throws CommandNotFoundException, UserException {
+    public String execute(CollectionManager collectionManager, String name, HumanBeing object, String[] args) throws CommandNotFoundException {
         if (!commands.containsKey(name)) throw new CommandNotFoundException();
         return commands.get(name).execute(collectionManager, object, args);
 }
