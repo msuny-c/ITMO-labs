@@ -2,6 +2,7 @@ package ru.itmo.app.Models;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 
@@ -10,7 +11,7 @@ public class HumanBeing implements Serializable, Comparable<HumanBeing> {
     private static final long serialVersionUID = 6529685098267757690L;
     private Integer id;
     private String name;
-    private Date creationDate;
+    private Timestamp creationDate;
     private Coordinates coordinates;
     private Mood mood;
     private WeaponType weaponType;
@@ -64,12 +65,15 @@ public class HumanBeing implements Serializable, Comparable<HumanBeing> {
         this.impactSpeed = impactSpeed;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 
     public Integer id() {
         return id;
+    }
+    public Timestamp creationDate() {
+        return creationDate;
     }
 
     public Coordinates coordinates() {

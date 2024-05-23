@@ -1,5 +1,6 @@
 package ru.itmo.app.Network;
 import ru.itmo.app.Models.HumanBeing;
+import ru.itmo.app.Network.Action;
 
 import java.io.Serial;
 import java.io.Serializable;

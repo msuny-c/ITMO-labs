@@ -10,19 +10,27 @@ import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.util.concurrent.*;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import ru.itmo.app.Network.Error;
+import ru.itmo.app.Network.CommandRequest;
+import ru.itmo.app.Network.Response;
+import ru.itmo.app.Network.Status;
 
 public class ServerManager implements IServerManager {
     private final int HEADER = 4;
-    private final HashMap<SocketChannel, ClientData> session = new HashMap<>();
+    private final ConcurrentHashMap<SocketChannel, ClientData> session = new ConcurrentHashMap<>();
     private final Integer port;
     private final ICommandHandler commandHandler;
+    private final ForkJoinPool forkJoinPool = new ForkJoinPool();
+    private final ExecutorService fixedThreadPool = Executors.newFixedThreadPool(8);
+    private final Set<Future<?>> futures = new HashSet<>();
     private static final Logger logger = LoggerFactory.getLogger(ServerManager.class);
 
     public ServerManager(Integer port, ICommandHandler commandHandler) {
@@ -45,8 +53,22 @@ public class ServerManager implements IServerManager {
                 iter.remove();
                 if (!key.isValid()) continue;
                 if (key.isAcceptable()) register(key);
-                else if (key.isReadable()) read(key);
-                else if (key.isWritable()) handleRequest(key);
+                else if (key.isReadable()) {
+                    try {
+                        fixedThreadPool.submit(() -> {
+                            try {
+                                read(key);
+                            } catch (IOException exception) {
+                                logger.error(exception.getMessage());
+                            }
+                        }).get();
+                    } catch (ExecutionException | InterruptedException exception) {
+                        logger.error(exception.getMessage());
+                    }
+                }
+                else if (key.isWritable()) {
+                    forkJoinPool.submit(() -> handleRequest(key)).join();
+                }
             }
         }
     }
@@ -69,7 +91,9 @@ public class ServerManager implements IServerManager {
                 disconnect(key);
                 return;
             }
-            logger.info("Received " + received + " bytes from " + data.IP_ADDRESS + ".");
+            if (received != 0) {
+                logger.info("Received " + received + " bytes from " + data.IP_ADDRESS + ".");
+            }
         } catch (SocketException exception) {
             disconnect(key);
             return;
@@ -84,30 +108,39 @@ public class ServerManager implements IServerManager {
 
     private void handleRequest(SelectionKey key) {
         SocketChannel client = (SocketChannel) key.channel();
-        ClientData data = session.get(client);
+        var data = session.get(client);
         byte[] packet = new byte[data.PACKET_SIZE];
         data.buffer.flip();
         data.buffer.position(HEADER);
         data.buffer.get(packet, 0, data.PACKET_SIZE);
-        Response response;
         try {
             CommandRequest request = deserialize(packet);
-            response = commandHandler.handle(request);
-        } catch (ClassNotFoundException exception) {
-            response = new Response(null, Status.FAIL, new Error(new ServerException("Unsupported class")));
+            Response response = commandHandler.handle(request);
+            fixedThreadPool.submit(() -> send(response, key)).get();
+            if (key.isValid()) {
+                client.register(key.selector(), SelectionKey.OP_READ);
+            }
         } catch (SocketException exception) {
             disconnect(key);
-            return;
+        } catch (IOException | ExecutionException | InterruptedException | ClassNotFoundException exception) {
+            logger.error(exception.getMessage());
+        }
+    }
+    private void send(Response response, SelectionKey key) {
+        SocketChannel client = (SocketChannel) key.channel();
+        var data = session.get(client);
+        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(byteStream);
+            oos.writeObject(response);
         } catch (IOException exception) {
             logger.error(exception.getMessage());
-            return;
         }
         try {
-            var sent = send(response, client);
+            int sent = client.write(ByteBuffer.wrap(byteStream.toByteArray()));
             logger.info("Sent " + sent + " bytes to " + data.IP_ADDRESS + ".");
             data.PACKET_SIZE = 0;
             data.buffer.compact();
-            client.register(key.selector(), SelectionKey.OP_READ);
         } catch (SocketException exception) {
             disconnect(key);
         } catch (IOException exception) {
@@ -120,16 +153,6 @@ public class ServerManager implements IServerManager {
         return (CommandRequest) ois.readObject();
     }
 
-    private int send(Response response, SocketChannel client) throws IOException {
-        ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-        try {
-            ObjectOutputStream oos = new ObjectOutputStream(byteStream);
-            oos.writeObject(response);
-        } catch (IOException exception) {
-            System.out.println(exception.getMessage());
-        }
-        return client.write(ByteBuffer.wrap(byteStream.toByteArray()));
-    }
 
     private void disconnect(SelectionKey key) {
         SocketChannel client = (SocketChannel) key.channel();

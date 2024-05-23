@@ -1,6 +1,6 @@
 package ru.itmo.app.Commands;
 
-import ru.itmo.app.Exceptions.NotPermissionException;
+import ru.itmo.app.Exceptions.NoPermissionException;
 import ru.itmo.app.Managers.CollectionManager;
 import ru.itmo.app.Models.HumanBeing;
 
@@ -19,7 +19,7 @@ public class UpdateCommand extends AbstractCommand {
             return String.format("Object with ID %s was successfully updated.", id);
         } catch (NoSuchElementException exception) {
             return "Object with given ID was not found.";
-        } catch (NotPermissionException exception) {
+        } catch (NoPermissionException exception) {
             return "You do not have enough rights to modify this object.";
         }
     }

@@ -29,7 +29,6 @@ public class HumanBeingProcessor implements IDataBaseProcessor<HumanBeing> {
             coordinates_id = coordsResultSet.getInt("id");
         }
 
-        // Добавляем авто
         String carAddQuery = "INSERT INTO car (id, name, cool) VALUES(default, ?, ?) RETURNING id";
         PreparedStatement carStatement = connection.prepareStatement(carAddQuery);
         carStatement.setString(1, object.car().getName());
@@ -39,7 +38,6 @@ public class HumanBeingProcessor implements IDataBaseProcessor<HumanBeing> {
             car_id = carResultSet.getInt("id");
         }
 
-        // Добавляем человека
         String humanAddQuery;
         PreparedStatement humanStatement;
         int i = 1;
@@ -84,10 +82,16 @@ public class HumanBeingProcessor implements IDataBaseProcessor<HumanBeing> {
         }
         humanStatement.setString(i, object.getUser());
 
-
         ResultSet humanResultSet = humanStatement.executeQuery();
         if (humanResultSet.next()) {
             human_id = humanResultSet.getInt("id");
+        }
+        if (object.creationDate() != null) {
+            String update = "UPDATE human_being SET creationDate = ? WHERE id = ?";
+            PreparedStatement update_statement = connection.prepareStatement(update);
+            update_statement.setTimestamp(1, object.creationDate());
+            update_statement.setInt(2, object.id());
+            update_statement.executeUpdate();
         }
 
         return human_id;

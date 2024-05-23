@@ -7,6 +7,10 @@ import ru.itmo.app.Interfaces.IAuthManager;
 import ru.itmo.app.Interfaces.ICommandHandler;
 import ru.itmo.app.Network.*;
 import ru.itmo.app.Network.Error;
+import ru.itmo.app.Network.Action;
+import ru.itmo.app.Network.CommandRequest;
+import ru.itmo.app.Network.Response;
+import ru.itmo.app.Network.Status;
 
 import java.sql.SQLException;
 

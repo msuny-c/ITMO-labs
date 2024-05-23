@@ -3,6 +3,7 @@ package ru.itmo.app.Database;
 import ru.itmo.app.Interfaces.IAuthProcessor;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -33,17 +34,21 @@ public class AuthProcessor implements IAuthProcessor {
 
     @Override
     public String getUserSalt(String username) throws SQLException {
-        String query = String.format("SELECT salt FROM users WHERE name = '%s'", username);
-        ResultSet resultSet = connection.createStatement().executeQuery(query);
-        if (resultSet.next()) {
-            return resultSet.getString("salt");
-        }
-        return null;
+        String query = "SELECT salt FROM users WHERE name = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, username);
+        ResultSet resultSet = statement.executeQuery();
+        resultSet.next();
+        return resultSet.getString("salt");
     }
 
     @Override
     public void insert(String username, String password, String salt) throws SQLException {
-        String query = String.format("INSERT INTO users VALUES ('%s', '%s', '%s')", username, password, salt);
-        connection.createStatement().executeUpdate(query);
+        String query = "INSERT INTO users (name, password, salt) VALUES (?, ?, ?)";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, username);
+        statement.setString(2, password);
+        statement.setString(3, salt);
+        statement.executeUpdate();
     }
 }

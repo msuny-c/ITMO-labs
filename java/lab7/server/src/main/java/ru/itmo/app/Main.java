@@ -1,16 +1,14 @@
 package ru.itmo.app;
 
 import ru.itmo.app.Commands.*;
-import ru.itmo.app.Database.AuthManager;
-import ru.itmo.app.Database.AuthProcessor;
-import ru.itmo.app.Database.DatabaseManager;
-import ru.itmo.app.Database.HumanBeingProcessor;
+import ru.itmo.app.Database.*;
 import ru.itmo.app.Interfaces.IAuthProcessor;
+import ru.itmo.app.Interfaces.IHashManager;
 import ru.itmo.app.Interfaces.IServerManager;
 import ru.itmo.app.Interfaces.IUserValidator;
 import ru.itmo.app.Managers.*;
 import ru.itmo.app.Models.HumanBeing;
-import ru.itmo.app.Network.UserValidator;
+import ru.itmo.app.Database.UserValidator;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -23,7 +21,8 @@ public class Main {
 
         IUserValidator userValidator = new UserValidator();
         IAuthProcessor processor = new AuthProcessor();
-        AuthManager authManager = new AuthManager(userValidator, processor);
+        IHashManager hashManager = new HashManager();
+        AuthManager authManager = new AuthManager(userValidator, processor, hashManager);
         authManager.setConnection(databaseManager.getConnection());
 
         CollectionManager collectionManager = new CollectionManager(databaseManager);
