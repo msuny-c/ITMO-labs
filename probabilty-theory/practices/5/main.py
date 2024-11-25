@@ -9,9 +9,10 @@ class ProbabilitySolver:
     def print_var_series(self):
         print("Вариационный ряд:", self.numbers)
     def print_extreme_numbers(self):
-        print(self.numbers[-1], self.numbers[0])
+        print('Экстремальные значения:')
+        print('MIN:', self.numbers[-1], 'MAX:', self.numbers[0])
     def print_selection_size(self):
-        print(self.numbers[-1] - self.numbers[0])
+        print('Размер выборки:', self.numbers[-1] - self.numbers[0])
     def print_disperancy(self):
         mean = sum(self.numbers) / self.size
         sum_squared_dev = sum((x - mean) ** 2 for x in self.numbers)
@@ -45,6 +46,7 @@ class ProbabilitySolver:
         class_midpoints = []
         class_frequencies = []
         size = len(self.numbers)
+        print('Интервалы разбиения:')
         for i in range(M):
             lower_bound = xStart
             upper_bound = xStart + h
